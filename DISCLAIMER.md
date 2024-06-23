@@ -1,10 +1,10 @@
 # Disclaimer for TrackSnatcher
 
-**TrackSnatcher** is a tool that allows users to download music from YouTube using the `pytube` library. This disclaimer outlines important information and limitations regarding the use of TrackSnatcher.
+**TrackSnatcher** is a tool that allows users to download music from YouTube using the [`pytube`](https://github.com/pytube/pytube) library. This disclaimer outlines important information and limitations regarding the use of TrackSnatcher.
 
 ### Legal Compliance
 
-TrackSnatcher operates in a legal gray zone similar to the `pytube` library. Users are responsible for ensuring that their use of TrackSnatcher complies with all applicable laws and regulations. The developer, EscapedShadows, does not condone or encourage any illegal activities, including copyright infringement.
+TrackSnatcher operates in a legal gray zone similar to the [`pytube`](https://github.com/pytube/pytube) library. Users are responsible for ensuring that their use of TrackSnatcher complies with all applicable laws and regulations. The developer, EscapedShadows, does not condone or encourage any illegal activities, including copyright infringement.
 
 ### No Guarantees or Warranties
 
