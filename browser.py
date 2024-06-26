@@ -35,8 +35,6 @@ def main():
 
         sleep(.1)
 
-    print(links)
-
     watch_links = []
 
     for link in links:

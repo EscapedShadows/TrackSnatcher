@@ -16,13 +16,20 @@ def get_tracks(urls, oauth=False):
 
     return streams
 
-def get_title(url, oauth=False):
+def get_titles(urls, oauth=False):
     from pytube import YouTube
 
-    yt = YouTube(
-        url,
-        use_oauth=oauth,
-        allow_oauth_cache=oauth
-    )
+    titles = []
 
-    return yt.title
+    for url in urls:
+        yt = YouTube(
+            url,
+            use_oauth=oauth,
+            allow_oauth_cache=oauth
+        )
+
+        title = yt.title.replace('\u200b', '').replace('\u2060', '')
+
+        titles.append(title)
+    
+    return titles

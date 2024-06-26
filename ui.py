@@ -1,5 +1,8 @@
 import customtkinter as ctk
 import ctypes
+from browser import main as browserMain
+from pytubeinteraction import get_titles
+import threading
 
 screen_width = ctypes.windll.user32.GetSystemMetrics(0)
 screen_height = ctypes.windll.user32.GetSystemMetrics(1)
@@ -14,6 +17,13 @@ root = ctk.CTk()
 root.title("TrackSnatcher | EscapedShadows")
 root.geometry(f"{window_width}x{window_height}+{posX}+{posY}")
 
+def handle_browser():
+    usebrowser.configure(state="disabled")
+    links = browserMain()
+    titles = get_titles(links)
+    print(titles)
+    usebrowser.configure(state="normal")
+
 def create_playlist():
     print("Create Playlist button clicked")
 
@@ -21,7 +31,7 @@ def add_song():
     print("Add Song button clicked")
 
 def use_browser():
-    print("Use Browser button clicked")
+    threading.Thread(target=handle_browser).start()
 
 playlistname = ctk.CTkEntry(root, placeholder_text="Enter Playlist Name")
 playlistname.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
@@ -35,8 +45,8 @@ addsong.grid(row=1, column=0, padx=10, pady=10, sticky='ew')
 addsongbutton = ctk.CTkButton(root, text="Add Song", command=add_song)
 addsongbutton.grid(row=1, column=1, padx=10, pady=10, sticky='ew')
 
-userbrowser = ctk.CTkButton(root, text="Use Browser", command=use_browser)
-userbrowser.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='ew')
+usebrowser = ctk.CTkButton(root, text="Use Browser", command=use_browser)
+usebrowser.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='ew')
 
 feedbacklabel = ctk.CTkLabel(root, text="")
 feedbacklabel.grid(row=3, column=0, columnspan=2, padx=10, sticky='ew')
