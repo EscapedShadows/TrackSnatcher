@@ -16,6 +16,7 @@ posY = int(screen_height / 2 - window_height / 2)
 root = ctk.CTk()
 root.title("TrackSnatcher | EscapedShadows")
 root.geometry(f"{window_width}x{window_height}+{posX}+{posY}")
+root.resizable(False,False)
 
 def handle_browser():
     usebrowser.configure(state="disabled")
@@ -28,7 +29,21 @@ def create_playlist():
     print("Create Playlist button clicked")
 
 def add_song():
-    print("Add Song button clicked")
+    title = get_titles([addsong.get()])
+
+    title = title[0]
+
+    max_length = window_width // 8
+    if len(title) > max_length:
+        title = title[:max_length-3] + "..."
+
+    label = ctk.CTkLabel(songlist, text=title)
+    check = ctk.CTkCheckBox(songlist, text="Use")
+    check.select()
+
+    row = songlist.grid_size()[1]
+    label.grid(row=row, column=0, sticky='w', padx=10)
+    check.grid(row=row, column=1, sticky='w', padx=10)
 
 def use_browser():
     threading.Thread(target=handle_browser).start()
