@@ -5,7 +5,11 @@ def main():
     from selenium.webdriver.support import expected_conditions as EC
     from time import sleep
     import re
-    driver = webdriver.Edge()
+
+    options = webdriver.EdgeOptions()
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+
+    driver = webdriver.Edge(options=options)
     driver.get("https://youtube.com")
 
     button = WebDriverWait(driver, 10).until(
@@ -44,7 +48,6 @@ def main():
 
     watch_links = list(set(watch_links))
 
-    print(watch_links)
-
     driver.quit()
-main()
+
+    return watch_links
