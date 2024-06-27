@@ -33,3 +33,16 @@ def get_titles(urls, oauth=False):
         titles.append(title)
     
     return titles
+
+def get_id(url, oauth=False):
+    from pytube import YouTube
+
+    yt = YouTube(
+        url,
+        use_oauth=oauth,
+        allow_oauth_cache=oauth
+    )
+
+    vId = yt.video_id
+
+    return vId

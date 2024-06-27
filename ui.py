@@ -1,8 +1,10 @@
 import customtkinter as ctk
 import ctypes
 from browser import main as browserMain
-from pytubeinteraction import get_titles
+from pytubeinteraction import get_titles, get_id, get_tracks
 import threading
+import os
+from pytube import YouTube
 
 screen_width = ctypes.windll.user32.GetSystemMetrics(0)
 screen_height = ctypes.windll.user32.GetSystemMetrics(1)
@@ -22,13 +24,69 @@ def handle_browser():
     usebrowser.configure(state="disabled")
     links = browserMain()
     titles = get_titles(links)
-    print(titles)
     usebrowser.configure(state="normal")
+    for i, title in enumerate(titles):
+
+        max_length = window_width // 8
+        if len(title) > max_length:
+            title = title[:max_length-3] + "..."
+
+        label = ctk.CTkLabel(songlist, text=title)
+        label.custom_data = {}
+        label.custom_data["url"] = links[i]
+        check = ctk.CTkCheckBox(songlist, text="Use")
+        check.select()
+
+        row = songlist.grid_size()[1]
+        label.grid(row=row, column=0, sticky='w', padx=10)
+        check.grid(row=row, column=1, sticky='w', padx=10)
+
+def prepare_playlist():
+    links = []
+
+    elements = songlist.winfo_children()
+
+    for i in range(0,len(elements),2):
+        temp1, temp2 = elements[i].custom_data.get("url"),elements[i+1].get()
+
+        if temp2 == 0:
+            pass
+        else:
+            links.append(temp1)
+
+    if not os.path.isdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows"):
+        os.mkdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows")
+
+    if not os.path.isdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator"):
+        os.mkdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator")
+
+    if not os.path.isdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}"):
+        os.mkdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}")
+
+    for link in links:
+        vId = get_id(link)
+        if os.path.isfile(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{vId}.mp3"):
+            os.remove(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{vId}.mp3")
+
+    return links
 
 def create_playlist():
-    print("Create Playlist button clicked")
+    links = prepare_playlist()
+
+    ids = []
+
+    for link in links:
+        ids.append(get_id(link))
+
+    streams = get_tracks(links)
+
+    for i, stream in enumerate(streams):
+        mp4_file = stream.download(output_path=rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}")
+        print(mp4_file)
+        #os.rename(mp4_file, f"{ids[i]}.mp3")
 
 def add_song():
+
     title = get_titles([addsong.get()])
 
     title = title[0]
@@ -38,6 +96,8 @@ def add_song():
         title = title[:max_length-3] + "..."
 
     label = ctk.CTkLabel(songlist, text=title)
+    label.custom_data = {}
+    label.custom_data["url"] = addsong.get()
     check = ctk.CTkCheckBox(songlist, text="Use")
     check.select()
 
