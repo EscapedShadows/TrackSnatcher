@@ -4,7 +4,6 @@ from browser import main as browserMain
 from pytubeinteraction import get_titles, get_id, get_tracks
 import threading
 import os
-from pytube import YouTube
 
 screen_width = ctypes.windll.user32.GetSystemMetrics(0)
 screen_height = ctypes.windll.user32.GetSystemMetrics(1)
@@ -82,8 +81,7 @@ def create_playlist():
 
     for i, stream in enumerate(streams):
         mp4_file = stream.download(output_path=rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}")
-        print(mp4_file)
-        #os.rename(mp4_file, f"{ids[i]}.mp3")
+        os.rename(mp4_file, rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{ids[i]}.mp3")
 
 def add_song():
 
