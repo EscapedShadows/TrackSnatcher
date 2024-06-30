@@ -4,6 +4,7 @@ from browser import main as browserMain
 from pytubeinteraction import get_titles, get_id, get_tracks
 import threading
 import os
+import json
 
 screen_width = ctypes.windll.user32.GetSystemMetrics(0)
 screen_height = ctypes.windll.user32.GetSystemMetrics(1)
@@ -65,7 +66,7 @@ def prepare_playlist():
     for link in links:
         vId = get_id(link)
         if os.path.isfile(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{vId}.mp3"):
-            os.remove(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{vId}.mp3")
+            links.remove(link)
 
     return links
 

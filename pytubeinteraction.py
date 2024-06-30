@@ -1,4 +1,4 @@
-def get_tracks(urls, oauth=False):
+def get_tracks(urls, oauth=True):
     from pytube import YouTube
 
     streams = []
@@ -16,7 +16,7 @@ def get_tracks(urls, oauth=False):
 
     return streams
 
-def get_titles(urls, oauth=False):
+def get_titles(urls, oauth=True):
     from pytube import YouTube
 
     titles = []
@@ -34,7 +34,7 @@ def get_titles(urls, oauth=False):
     
     return titles
 
-def get_id(url, oauth=False):
+def get_id(url, oauth=True):
     from pytube import YouTube
 
     yt = YouTube(
