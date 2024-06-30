@@ -70,6 +70,10 @@ def prepare_playlist():
 
     return links
 
+def create_playlist_handler():
+    feedbacklabel.set(0)
+    threading.Thread(target=create_playlist).start()
+
 def create_playlist():
     links = prepare_playlist()
 
@@ -80,9 +84,17 @@ def create_playlist():
 
     streams = get_tracks(links)
 
+    intervalls = 1 / len(ids)
+
+    current = 0
+
     for i, stream in enumerate(streams):
         mp4_file = stream.download(output_path=rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}")
         os.rename(mp4_file, rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{ids[i]}.mp3")
+        current += intervalls
+        feedbacklabel.set(current)
+
+    os.system(rf"explorer C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}")
 
 def add_song():
 
@@ -110,7 +122,7 @@ def use_browser():
 playlistname = ctk.CTkEntry(root, placeholder_text="Enter Playlist Name")
 playlistname.grid(row=0, column=0, padx=10, pady=10, sticky='ew')
 
-createplaylist = ctk.CTkButton(root, text="Create Playlist", command=create_playlist)
+createplaylist = ctk.CTkButton(root, text="Create Playlist", command=create_playlist_handler)
 createplaylist.grid(row=0, column=1, padx=10, pady=10, sticky='ew')
 
 addsong = ctk.CTkEntry(root, placeholder_text="Add Song URL here...")
@@ -122,7 +134,7 @@ addsongbutton.grid(row=1, column=1, padx=10, pady=10, sticky='ew')
 usebrowser = ctk.CTkButton(root, text="Use Browser", command=use_browser)
 usebrowser.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky='ew')
 
-feedbacklabel = ctk.CTkLabel(root, text="")
+feedbacklabel = ctk.CTkProgressBar(root)
 feedbacklabel.grid(row=3, column=0, columnspan=2, padx=10, sticky='ew')
 
 songlist = ctk.CTkScrollableFrame(root, height=window_height, width=window_width - 50)
