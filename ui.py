@@ -4,7 +4,6 @@ from browser import main as browserMain
 from pytubeinteraction import get_titles, get_id, get_tracks
 import threading
 import os
-import json
 
 screen_width = ctypes.windll.user32.GetSystemMetrics(0)
 screen_height = ctypes.windll.user32.GetSystemMetrics(1)
