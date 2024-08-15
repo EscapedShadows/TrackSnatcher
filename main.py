@@ -1,9 +1,13 @@
+# https://escapedshadows.com/projects/tracksnatcher
+
 import customtkinter as ctk
 import ctypes
 from browser import main as browserMain
 from pytubeinteraction import get_titles, get_id, get_tracks
 import threading
 import os
+
+USE_OAUTH = False
 
 screen_width = ctypes.windll.user32.GetSystemMetrics(0)
 screen_height = ctypes.windll.user32.GetSystemMetrics(1)
@@ -22,7 +26,7 @@ root.resizable(False,False)
 def handle_browser():
     usebrowser.configure(state="disabled")
     links = browserMain()
-    titles = get_titles(links)
+    titles = get_titles(links, oauth=USE_OAUTH)
     usebrowser.configure(state="normal")
     for i, title in enumerate(titles):
 
@@ -63,7 +67,7 @@ def prepare_playlist():
         os.mkdir(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}")
 
     for link in links:
-        vId = get_id(link)
+        vId = get_id(link, oauth=USE_OAUTH)
         if os.path.isfile(rf"C:\Users\{os.getlogin()}\Documents\EscapedShadows\PlaylistCreator\{playlistname.get()}\{vId}.mp3"):
             links.remove(link)
 
@@ -81,7 +85,7 @@ def create_playlist():
     for link in links:
         ids.append(get_id(link))
 
-    streams = get_tracks(links)
+    streams = get_tracks(links, oauth=USE_OAUTH)
 
     intervalls = 1 / len(ids)
 
